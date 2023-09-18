@@ -34,7 +34,7 @@ func TestDate(t *testing.T) {
 				t.Fatalf("expected an error, got none")
 			}
 		})
-		t.Run("OK datetime with timezone. 00 seconds", func(t *testing.T) {
+		t.Run("OK datetime with timezone. 00 nanoseconds", func(t *testing.T) {
 			timeStr := "1987-02-13T00:00:00.000+01:00"
 			data := []byte(timeStr)
 			err := d.UnmarshalText(data)
@@ -49,7 +49,7 @@ func TestDate(t *testing.T) {
 				t.Fatalf("%s should be equal %s", d.String(), tt.String())
 			}
 		})
-		t.Run("OK date. 59 seconds", func(t *testing.T) {
+		t.Run("OK date. 59 nanoseconds", func(t *testing.T) {
 			timeStr := "1985-01-20"
 			data := []byte(timeStr)
 			err := d.UnmarshalText(data)
@@ -60,7 +60,7 @@ func TestDate(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			tt = tt.Add(time.Second * 59)
+			tt = tt.Add(time.Nanosecond * 59)
 			if !time.Time(d).Equal(tt) {
 				t.Fatalf("%s should be equal %s", d.String(), tt.String())
 			}
@@ -68,7 +68,7 @@ func TestDate(t *testing.T) {
 	})
 
 	t.Run("MarshalText", func(t *testing.T) {
-		t.Run("zero seconds to date", func(t *testing.T) {
+		t.Run("zero nanoseconds to date", func(t *testing.T) {
 			tt := time.Date(2023, 1, 20, 8, 15, 0, 0, time.UTC)
 			d := notionapi.Date(tt)
 			ttStr := tt.Format(time.RFC3339)
@@ -82,8 +82,8 @@ func TestDate(t *testing.T) {
 			}
 		})
 
-		t.Run("59 seconds to datetime", func(t *testing.T) {
-			tt := time.Date(2023, 1, 20, 8, 15, 59, 0, time.UTC)
+		t.Run("59 nanoseconds to datetime", func(t *testing.T) {
+			tt := time.Date(2023, 1, 20, 8, 15, 0, 59, time.UTC)
 			d := notionapi.Date(tt)
 			ttStr := tt.Format("2006-01-02")
 			dByte, err := d.MarshalText()

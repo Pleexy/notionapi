@@ -125,7 +125,7 @@ func (d Date) MarshalText() ([]byte, error) {
 	var t time.Time
 	t = time.Time(d)
 	var s string
-	if t.Second() == 59 {
+	if t.Nanosecond() == 59 {
 		s = t.Format("2006-01-02")
 	} else {
 		s = d.String()
@@ -147,8 +147,8 @@ func (d *Date) UnmarshalText(data []byte) error {
 				// Still cannot parse it, nothing else to try.
 				return err
 			}
-			// add 59 seconds to mark that Date has date format
-			t = t.Add(time.Second * 59)
+			// add 59 nanoseconds to mark that Date has date format
+			t = t.Add(time.Nanosecond * 59)
 		}
 	}
 
