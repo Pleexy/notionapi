@@ -122,7 +122,15 @@ func (d *Date) String() string {
 }
 
 func (d Date) MarshalText() ([]byte, error) {
-	return []byte(d.String()), nil
+	var t time.Time
+	t = time.Time(d)
+	var s string
+	if t.Second() == 59 {
+		s = t.Format("2006-01-02")
+	} else {
+		s = d.String()
+	}
+	return []byte(s), nil
 }
 
 func (d *Date) UnmarshalText(data []byte) error {
@@ -139,6 +147,8 @@ func (d *Date) UnmarshalText(data []byte) error {
 				// Still cannot parse it, nothing else to try.
 				return err
 			}
+			// add 59 seconds to mark that Date has date format
+			t = t.Add(time.Second * 59)
 		}
 	}
 
