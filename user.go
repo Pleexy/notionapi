@@ -115,14 +115,24 @@ type Person struct {
 	Email string `json:"email"`
 }
 
+type OwnerUser struct {
+	Object    ObjectType `json:"object,omitempty"`
+	ID        UserID     `json:"id"`
+	Type      UserType   `json:"type,omitempty"`
+	Name      string     `json:"name,omitempty"`
+	AvatarURL string     `json:"avatar_url,omitempty"`
+	Person    *Person    `json:"person,omitempty"`
+}
+
 type Bot struct {
 	Owner         Owner  `json:"owner"`
 	WorkspaceName string `json:"workspace_name"`
 }
 
 type Owner struct {
-	Type      string `json:"type"`
-	Workspace bool   `json:"workspace"`
+	Type      string     `json:"type"`
+	User      *OwnerUser `json:"user"`
+	Workspace bool       `json:"workspace"`
 }
 
 type UsersListResponse struct {

@@ -1,0 +1,23 @@
+{
+  "object": "user",
+  "id": "some_id",
+  "name": "John Doe",
+  "avatar_url": "some.url",
+  "type": "person",
+  "bot": {
+    "owner": {
+      "type": "user",
+      "user": {
+        "object": "user",
+        "id": "some_id",
+        "name": "Alice Smith",
+        "avatar_url": "another.url",
+        "type": "person",
+        "person": {
+          "email": "alice@smith.com"
+        }
+      }
+    },
+    "workspace_name": "Alice Smith's Workspace"
+  }
+}

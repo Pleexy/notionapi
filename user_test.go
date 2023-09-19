@@ -2,10 +2,11 @@ package notionapi_test
 
 import (
 	"context"
-	"github.com/jomei/notionapi"
 	"net/http"
 	"reflect"
 	"testing"
+
+	"github.com/jomei/notionapi"
 )
 
 func TestUserClient(t *testing.T) {
@@ -117,8 +118,8 @@ func TestUserClient(t *testing.T) {
 			err        error
 		}{
 			{
-				name:       "returns me-user",
-				filePath:   "testdata/user_me.json",
+				name:       "returns me-user-workspace",
+				filePath:   "testdata/user_me_workspace.json",
 				statusCode: http.StatusOK,
 				want: &notionapi.User{
 					Object:    notionapi.ObjectTypeUser,
@@ -128,8 +129,35 @@ func TestUserClient(t *testing.T) {
 					AvatarURL: "some.url",
 					Bot: &notionapi.Bot{Owner: notionapi.Owner{
 						Type:      "workspace",
+						User:      nil,
 						Workspace: true,
 					}, WorkspaceName: "John Doe's Workspace"},
+				},
+			},
+			{
+				name:       "returns me-user-user",
+				filePath:   "testdata/user_me_user.json",
+				statusCode: http.StatusOK,
+				want: &notionapi.User{
+					Object:    notionapi.ObjectTypeUser,
+					ID:        "some_id",
+					Type:      notionapi.UserTypePerson,
+					Name:      "John Doe",
+					AvatarURL: "some.url",
+					Bot: &notionapi.Bot{Owner: notionapi.Owner{
+						Type:      "user",
+						Workspace: false,
+						User: &notionapi.OwnerUser{
+							Object:    "user",
+							ID:        "some_id",
+							Type:      "person",
+							Name:      "Alice Smith",
+							AvatarURL: "another.url",
+							Person: &notionapi.Person{
+								Email: "alice@smith.com",
+							},
+						},
+					}, WorkspaceName: "Alice Smith's Workspace"},
 				},
 			},
 		}
