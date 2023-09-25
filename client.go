@@ -180,7 +180,7 @@ func (c *Client) requestImpl(ctx context.Context, method string, urlStr string, 
 		}
 
 		failedAttempts++
-		if failedAttempts == c.maxRetries {
+		if failedAttempts >= c.maxRetries {
 			return nil, &RateLimitedError{RetryAfterSec: waitSeconds, Message: fmt.Sprintf("Retry request with 429 response failed after %d retries", failedAttempts)}
 		}
 
