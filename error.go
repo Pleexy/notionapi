@@ -14,7 +14,8 @@ func (e *Error) Error() string {
 }
 
 type RateLimitedError struct {
-	Message string
+	RetryAfterSec int
+	Message       string
 }
 
 func (e *RateLimitedError) Error() string {

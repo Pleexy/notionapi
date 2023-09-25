@@ -167,14 +167,10 @@ func (c *Client) requestImpl(ctx context.Context, method string, urlStr string, 
 			break
 		}
 
-		failedAttempts++
-		if failedAttempts == c.maxRetries {
-			return nil, &RateLimitedError{Message: fmt.Sprintf("Retry request with 429 response failed after %d retries", failedAttempts)}
-		}
 		// https://developers.notion.com/reference/request-limits#rate-limits
 		retryAfterHeader := res.Header["Retry-After"]
 		if len(retryAfterHeader) == 0 {
-			return nil, &RateLimitedError{Message: "Retry-After header missing from Notion API response headers for 429 response"}
+			return nil, &RateLimitedError{RetryAfterSec: 0, Message: "Retry-After header missing from Notion API response headers for 429 response"}
 		}
 		retryAfter := retryAfterHeader[0]
 
@@ -182,6 +178,12 @@ func (c *Client) requestImpl(ctx context.Context, method string, urlStr string, 
 		if err != nil {
 			break // should not happen
 		}
+
+		failedAttempts++
+		if failedAttempts == c.maxRetries {
+			return nil, &RateLimitedError{RetryAfterSec: waitSeconds, Message: fmt.Sprintf("Retry request with 429 response failed after %d retries", failedAttempts)}
+		}
+
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
