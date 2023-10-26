@@ -160,6 +160,7 @@ func (p FormulaPropertyConfig) GetType() PropertyConfigType {
 }
 
 type RelationPropertyConfig struct {
+	ID       ObjectID           `json:"id,omitempty"`
 	Type     PropertyConfigType `json:"type"`
 	Relation RelationConfig     `json:"relation"`
 }
