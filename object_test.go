@@ -27,11 +27,24 @@ func TestDate(t *testing.T) {
 				t.Fatal(err)
 			}
 		})
-		t.Run("NOK", func(t *testing.T) {
+		t.Run("NOK as zero time", func(t *testing.T) {
 			data := []byte("1985")
 			err := d.UnmarshalText(data)
-			if err == nil {
-				t.Fatalf("expected an error, got none")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !time.Time(d).IsZero() {
+				t.Fatalf("icnorrect date fotmat should return zero time")
+			}
+		})
+		t.Run("Date NaN-NaN-NaN should process as zero time", func(t *testing.T) {
+			data := []byte("NaN-NaN-NaN")
+			err := d.UnmarshalText(data)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !time.Time(d).IsZero() {
+				t.Fatalf("icnorrect date fotmat should return zero time")
 			}
 		})
 		t.Run("OK datetime with timezone. 00 nanoseconds", func(t *testing.T) {

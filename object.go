@@ -144,11 +144,12 @@ func (d *Date) UnmarshalText(data []byte) error {
 		} else {
 			t, err = time.Parse("2006-01-02", string(data)) // Date
 			if err != nil {
-				// Still cannot parse it, nothing else to try.
-				return err
+				// Notion API can return incorrect data format like NaN-NaN-NaN
+				t = time.Time{}
+			} else {
+				// add 59 nanoseconds to mark that Date has date format
+				t = t.Add(time.Nanosecond * 59)
 			}
-			// add 59 nanoseconds to mark that Date has date format
-			t = t.Add(time.Nanosecond * 59)
 		}
 	}
 
