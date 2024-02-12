@@ -79,6 +79,20 @@ func (p TextProperty) GetType() PropertyType {
 	return p.Type
 }
 
+type ButtonProperty struct {
+	ID     PropertyID   `json:"id,omitempty"`
+	Type   PropertyType `json:"type,omitempty"`
+	Button struct{}     `json:"button"`
+}
+
+func (p ButtonProperty) GetID() string {
+	return p.ID.String()
+}
+
+func (p ButtonProperty) GetType() PropertyType {
+	return p.Type
+}
+
 type NumberProperty struct {
 	ID     PropertyID   `json:"id,omitempty"`
 	Type   PropertyType `json:"type,omitempty"`
@@ -445,6 +459,8 @@ func decodeProperty(raw map[string]interface{}) (Property, error) {
 		p = &RichTextProperty{}
 	case PropertyTypeText:
 		p = &RichTextProperty{}
+	case PropertyTypeButton:
+		p = &ButtonProperty{}
 	case PropertyTypeNumber:
 		p = &NumberProperty{}
 	case PropertyTypeSelect:

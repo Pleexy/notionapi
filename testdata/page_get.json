@@ -109,6 +109,11 @@
           "number": 56
         }]
       }
+    },
+    "Button": {
+      "id": "button",
+      "type": "button",
+      "button": {}
     }
   }
 }

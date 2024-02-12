@@ -14,6 +14,7 @@ const (
 const (
 	PropertyConfigTypeTitle       PropertyConfigType = "title"
 	PropertyConfigTypeRichText    PropertyConfigType = "rich_text"
+	PropertyConfigTypeButton      PropertyConfigType = "button"
 	PropertyConfigTypeNumber      PropertyConfigType = "number"
 	PropertyConfigTypeSelect      PropertyConfigType = "select"
 	PropertyConfigTypeMultiSelect PropertyConfigType = "multi_select"
@@ -41,6 +42,7 @@ const (
 	PropertyTypeRichText       PropertyType = "rich_text"
 	PropertyTypeText           PropertyType = "text"
 	PropertyTypeNumber         PropertyType = "number"
+	PropertyTypeButton         PropertyType = "button"
 	PropertyTypeSelect         PropertyType = "select"
 	PropertyTypeMultiSelect    PropertyType = "multi_select"
 	PropertyTypeDate           PropertyType = "date"

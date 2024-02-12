@@ -58,6 +58,12 @@
       "id": "title",
       "type": "title",
       "title": {}
+    },
+    "Button": {
+      "id": "button",
+      "name": "Button",
+      "type": "button",
+      "button": {}
     }
   }
 }

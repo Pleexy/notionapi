@@ -115,6 +115,16 @@ func (p CheckboxPropertyConfig) GetType() PropertyConfigType {
 	return p.Type
 }
 
+type ButtonPropertyConfig struct {
+	ID     ObjectID           `json:"id,omitempty"`
+	Type   PropertyConfigType `json:"type"`
+	Button struct{}           `json:"button"`
+}
+
+func (p ButtonPropertyConfig) GetType() PropertyConfigType {
+	return p.Type
+}
+
 type URLPropertyConfig struct {
 	ID   ObjectID           `json:"id,omitempty"`
 	Type PropertyConfigType `json:"type"`
@@ -319,6 +329,8 @@ func parsePropertyConfigs(raw map[string]interface{}) (PropertyConfigs, error) {
 				p = &TitlePropertyConfig{}
 			case PropertyConfigTypeRichText:
 				p = &RichTextPropertyConfig{}
+			case PropertyConfigTypeButton:
+				p = &ButtonPropertyConfig{}
 			case PropertyConfigTypeNumber:
 				p = &NumberPropertyConfig{}
 			case PropertyConfigTypeSelect:

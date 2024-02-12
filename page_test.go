@@ -141,6 +141,11 @@ func TestPageClient(t *testing.T) {
 								},
 							},
 						},
+						"Button": &notionapi.ButtonProperty{
+							ID:     "button",
+							Type:   "button",
+							Button: struct{}{},
+						},
 					},
 				},
 			},
