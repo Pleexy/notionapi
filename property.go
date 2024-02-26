@@ -339,11 +339,7 @@ func (p *CreatedTimeProperty) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("can't find type in CreatedTimeProperty")
 	}
 
-	dateStr, ok := raw["created_time"].(string)
-	if !ok {
-		return fmt.Errorf("can't find created_time in CreatedTimeProperty")
-	}
-
+	dateStr := raw["created_time"].(string)
 	createdTime, err := time.Parse(time.RFC3339, dateStr)
 	if err != nil {
 		createdTime, err = time.Parse("2006-01-02", dateStr)
