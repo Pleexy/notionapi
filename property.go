@@ -315,12 +315,48 @@ type CreatedTimeProperty struct {
 	CreatedTime time.Time    `json:"created_time"`
 }
 
-func (p CreatedTimeProperty) GetID() string {
+func (p *CreatedTimeProperty) GetID() string {
 	return p.ID.String()
 }
 
-func (p CreatedTimeProperty) GetType() PropertyType {
+func (p *CreatedTimeProperty) GetType() PropertyType {
 	return p.Type
+}
+
+func (p *CreatedTimeProperty) UnmarshalJSON(data []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	id, ok := raw["id"].(string)
+	if !ok {
+		return fmt.Errorf("can't find id in CreatedTimeProperty")
+	}
+
+	propType, ok := raw["type"].(string)
+	if !ok {
+		return fmt.Errorf("can't find type in CreatedTimeProperty")
+	}
+
+	dateStr, ok := raw["created_time"].(string)
+	if !ok {
+		return fmt.Errorf("can't find created_time in CreatedTimeProperty")
+	}
+
+	createdTime, err := time.Parse(time.RFC3339, dateStr)
+	if err != nil {
+		createdTime, err = time.Parse("2006-01-02", dateStr)
+		if err != nil {
+			createdTime = time.Time{}
+		}
+	}
+
+	p.ID = ObjectID(id)
+	p.Type = PropertyType(propType)
+	p.CreatedTime = createdTime
+
+	return nil
 }
 
 type CreatedByProperty struct {
