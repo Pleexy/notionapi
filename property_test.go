@@ -50,6 +50,19 @@ func TestCreatedTimeProperty_UnmarshalJSON(t *testing.T) {
 				CreatedTime: time.Time{},
 			},
 		},
+		{
+			name: "Create Time. interface",
+			data: `{
+				"id": "12345",
+				"type": "created_time",
+				"created_time": {}
+			}`,
+			want: CreatedTimeProperty{
+				ID:          "12345",
+				Type:        PropertyTypeCreatedTime,
+				CreatedTime: time.Time{},
+			},
+		},
 	}
 
 	for _, tt := range tests {

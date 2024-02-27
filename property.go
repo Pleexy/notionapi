@@ -347,7 +347,10 @@ func (p *CreatedTimeProperty) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	dateStr := date.(string)
+	dateStr, ok := date.(string)
+	if !ok {
+		return nil
+	}
 	createdTime, err := time.Parse(time.RFC3339, dateStr)
 	if err != nil {
 		createdTime, _ = time.Parse("2006-01-02", dateStr)
