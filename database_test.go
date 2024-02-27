@@ -106,7 +106,7 @@ func TestDatabaseClient(t *testing.T) {
 			err        error
 		}{
 			{
-				name:       "returns query results",
+				name:       "returns query results and ignore database objects",
 				id:         "some_id",
 				filePath:   "testdata/database_query.json",
 				statusCode: http.StatusOK,

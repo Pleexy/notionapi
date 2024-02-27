@@ -208,6 +208,57 @@ type DatabaseQueryResponse struct {
 	NextCursor Cursor     `json:"next_cursor"`
 }
 
+func (p *DatabaseQueryResponse) UnmarshalJSON(data []byte) error {
+	var raw map[string]interface{}
+	err := json.Unmarshal(data, &raw)
+	if err != nil {
+		return err
+	}
+
+	object, _ := raw["object"].(string)
+	hasMore, _ := raw["has_more"].(bool)
+	nextCursor, _ := raw["next_cursor"].(string)
+
+	results, _ := raw["results"].([]interface{})
+
+	pages, err := convertResultsToPages(results)
+	if err != nil {
+		return err
+	}
+
+	p.Object = ObjectType(object)
+	p.Results = pages
+	p.HasMore = hasMore
+	p.NextCursor = Cursor(nextCursor)
+
+	return nil
+}
+
+func convertResultsToPages(results []interface{}) ([]Page, error) {
+	var pages []Page
+	for _, r := range results {
+		result, ok := r.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		if objectType, ok := result["object"]; !ok || objectType != string(ObjectTypePage) {
+			continue
+		}
+		var page Page
+		marshaledPage, err := json.Marshal(r)
+		if err != nil {
+			return nil, err
+		}
+		err = json.Unmarshal(marshaledPage, &page)
+		if err != nil {
+			return nil, err
+		}
+		pages = append(pages, page)
+	}
+	return pages, nil
+}
+
 func (qr *DatabaseQueryRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Sorts       []SortObject `json:"sorts,omitempty"`
